@@ -5,12 +5,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Run
 
 ```bash
-pip install -e .              # Install in editable mode (includes all deps)
+pip install -e ".[test]"                 # Install in editable mode with test deps
 openclaw-tracker scan --shodan-key KEY   # Run CLI scan
 openclaw-tracker dashboard               # Launch Streamlit dashboard (port 8501)
+openclaw-tracker dashboard --open        # Launch dashboard and open browser
 ```
 
-There are no tests or linting configured locally.
+## Testing & Linting
+
+```bash
+pytest tests/                # Run all tests (19 tests across 3 files)
+pylint src/                  # Lint source code (should score 10/10)
+```
+
+Tests cover models (`test_models.py`), Shodan query logic with mocked API (`test_shodan_query.py`), and reporter output (`test_reporter.py`). CI runs both pylint and pytest on Python 3.11, 3.12, and 3.13.
 
 ## Architecture
 
@@ -27,4 +35,4 @@ Data flow: `shodan_query.run_all_queries()` → `ScanResult` (dataclass) → ren
 
 ## Dependencies
 
-Requires Python 3.11+. Core deps: `shodan`, `rich`, `click`, `streamlit`, `plotly`, `pycountry`.
+Requires Python 3.11+. Core deps: `shodan`, `rich`, `click`, `streamlit`, `plotly`, `pycountry`. Test dep: `pytest` (installed via `.[test]`).
