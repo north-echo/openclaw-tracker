@@ -131,9 +131,8 @@ if rows:
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         coloraxis_colorbar=dict(
-            title="Instances",
+            title=dict(text="Instances", font=dict(color="#cccccc")),
             tickfont=dict(color="#cccccc"),
-            titlefont=dict(color="#cccccc"),
         ),
         dragmode="pan",
     )
