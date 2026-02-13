@@ -101,7 +101,7 @@ for c in result.countries:
             }
         )
 
-# --- Choropleth map ---
+# --- Choropleth globe ---
 if rows:
     st.subheader("World Map")
     fig_map = px.choropleth(
@@ -109,10 +109,38 @@ if rows:
         locations="alpha_3",
         color="count",
         hover_name="country_name",
-        color_continuous_scale="Blues",
+        color_continuous_scale="Plasma",
         labels={"count": "Instances", "alpha_3": "ISO Code"},
     )
-    fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fig_map.update_geos(
+        projection_type="orthographic",
+        showcoastlines=True,
+        coastlinecolor="#555555",
+        showland=True,
+        landcolor="#1a1a2e",
+        showocean=True,
+        oceancolor="#0f0f1a",
+        showlakes=False,
+        showcountries=True,
+        countrycolor="#333333",
+        bgcolor="rgba(0,0,0,0)",
+    )
+    fig_map.update_layout(
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        height=600,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        coloraxis_colorbar=dict(
+            title="Instances",
+            tickfont=dict(color="#cccccc"),
+            titlefont=dict(color="#cccccc"),
+        ),
+        dragmode="pan",
+    )
+    fig_map.update_traces(
+        marker_line_color="#444444",
+        marker_line_width=0.5,
+    )
     st.plotly_chart(fig_map, use_container_width=True)
 
 # --- Bar chart (top N) ---
