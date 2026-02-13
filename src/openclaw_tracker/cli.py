@@ -3,13 +3,19 @@
 from __future__ import annotations
 
 import os
+import subprocess
 import sys
+import threading
+import time
+import webbrowser
+from pathlib import Path
 
 import click
+import shodan
 from rich.console import Console
 
 from .reporter import print_scan_result, write_json
-from .shodan_query import DEFAULT_QUERIES, run_all_queries
+from .shodan_query import run_all_queries
 
 console = Console()
 
@@ -69,7 +75,7 @@ def scan(
             queries=queries,
             top_countries=top,
         )
-    except Exception as exc:
+    except (shodan.APIError, OSError) as exc:
         console.print(f"[red]Shodan query failed:[/red] {exc}")
         sys.exit(1)
 
@@ -84,12 +90,6 @@ def scan(
 @click.option("--open/--no-open", "open_browser", default=False, help="Open browser automatically.")
 def dashboard(port: int, open_browser: bool) -> None:
     """Launch the interactive Streamlit dashboard."""
-    import subprocess
-    import threading
-    import time
-    import webbrowser
-    from pathlib import Path
-
     if open_browser:
         def _open() -> None:
             time.sleep(2)
@@ -104,6 +104,7 @@ def dashboard(port: int, open_browser: bool) -> None:
         [sys.executable, "-m", "streamlit", "run", str(dashboard_path),
          "--server.port", str(port)],
         env=env,
+        check=False,
     )
 
 

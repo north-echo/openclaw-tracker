@@ -76,7 +76,7 @@ def print_scan_result(result: ScanResult) -> None:
         f"[bold]Total instances across all queries:[/bold] {result.total_instances:,}"
     )
     console.print(
-        f"[dim]Note: totals may include duplicates across queries.[/dim]"
+        "[dim]Note: totals may include duplicates across queries.[/dim]"
     )
     console.print(f"[dim]Timestamp: {result.timestamp.isoformat()}[/dim]")
     console.print()
@@ -85,5 +85,5 @@ def print_scan_result(result: ScanResult) -> None:
 def write_json(result: ScanResult, path: str | Path) -> None:
     """Write scan results to a JSON file."""
     path = Path(path)
-    path.write_text(json.dumps(result.to_dict(), indent=2))
+    path.write_text(json.dumps(result.to_dict(), indent=2), encoding="utf-8")
     console.print(f"[green]Results written to {path}[/green]")

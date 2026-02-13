@@ -7,6 +7,7 @@ import os
 
 import plotly.express as px
 import pycountry
+import shodan
 import streamlit as st
 
 from openclaw_tracker.models import ScanResult
@@ -59,7 +60,7 @@ if run_clicked:
                     top_countries=top_n,
                 )
                 st.session_state["scan_result"] = result
-            except Exception as exc:
+            except (shodan.APIError, OSError) as exc:
                 st.sidebar.error(f"Query failed: {exc}")
 
 # ---------------------------------------------------------------------------
@@ -137,10 +138,10 @@ if rows:
         height=600,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        coloraxis_colorbar=dict(
-            title=dict(text="Instances", font=dict(color="#cccccc")),
-            tickfont=dict(color="#cccccc"),
-        ),
+        coloraxis_colorbar={
+            "title": {"text": "Instances", "font": {"color": "#cccccc"}},
+            "tickfont": {"color": "#cccccc"},
+        },
         dragmode="pan",
     )
     fig_map.update_traces(
