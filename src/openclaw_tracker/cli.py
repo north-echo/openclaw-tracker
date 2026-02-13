@@ -81,10 +81,21 @@ def scan(
 
 @main.command()
 @click.option("--port", default=8501, show_default=True, help="Port for the Streamlit server.")
-def dashboard(port: int) -> None:
+@click.option("--open/--no-open", "open_browser", default=False, help="Open browser automatically.")
+def dashboard(port: int, open_browser: bool) -> None:
     """Launch the interactive Streamlit dashboard."""
     import subprocess
+    import threading
+    import time
+    import webbrowser
     from pathlib import Path
+
+    if open_browser:
+        def _open() -> None:
+            time.sleep(2)
+            webbrowser.open(f"http://localhost:{port}")
+
+        threading.Thread(target=_open, daemon=True).start()
 
     dashboard_path = Path(__file__).parent / "dashboard.py"
     src_dir = str(Path(__file__).parent.parent)

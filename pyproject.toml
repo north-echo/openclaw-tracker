@@ -16,6 +16,9 @@ dependencies = [
     "pycountry>=24.6.1",
 ]
 
+[project.optional-dependencies]
+test = ["pytest>=8.0.0"]
+
 [project.scripts]
 openclaw-tracker = "openclaw_tracker.cli:main"
 

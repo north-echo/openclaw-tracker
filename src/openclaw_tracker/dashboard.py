@@ -44,6 +44,10 @@ top_n = st.sidebar.number_input(
 
 run_clicked = st.sidebar.button("Run Query")
 
+if st.sidebar.button("Clear Results"):
+    st.session_state.pop("scan_result", None)
+    st.rerun()
+
 if run_clicked:
     if not api_key:
         st.sidebar.error("Please enter a Shodan API key.")
@@ -86,6 +90,9 @@ if top_country:
         top_country.country_name,
         f"{top_country.count:,} instances",
     )
+
+st.caption("Note: totals may include duplicates across queries.")
+st.caption(f"Data fetched at: {result.timestamp.strftime('%Y-%m-%d %H:%M:%S UTC')}")
 
 # --- Build dataframe rows ---
 rows = []
