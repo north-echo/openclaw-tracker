@@ -87,9 +87,12 @@ def dashboard(port: int) -> None:
     from pathlib import Path
 
     dashboard_path = Path(__file__).parent / "dashboard.py"
+    src_dir = str(Path(__file__).parent.parent)
+    env = {**os.environ, "PYTHONPATH": src_dir + os.pathsep + os.environ.get("PYTHONPATH", "")}
     subprocess.run(
         [sys.executable, "-m", "streamlit", "run", str(dashboard_path),
          "--server.port", str(port)],
+        env=env,
     )
 
 

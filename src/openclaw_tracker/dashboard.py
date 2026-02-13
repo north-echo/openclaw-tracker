@@ -9,8 +9,8 @@ import plotly.express as px
 import pycountry
 import streamlit as st
 
-from .models import ScanResult
-from .shodan_query import run_all_queries
+from openclaw_tracker.models import ScanResult
+from openclaw_tracker.shodan_query import run_all_queries
 
 st.set_page_config(page_title="OpenClaw Tracker", layout="wide")
 
